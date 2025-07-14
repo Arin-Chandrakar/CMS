@@ -25,4 +25,8 @@ app.post("/user/purchases",function(req,res){
     
 })
 
+app.post("/course/purchses",function(req,res){
+    
+})
+
 app.listen(5000);

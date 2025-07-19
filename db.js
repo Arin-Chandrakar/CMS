@@ -1,7 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
-
-mongoose.connect('mongodb+srv://arinch:thwxpcRUeC2djbCZ@cluster0.twn04.mongodb.net/coursehub');
+const { dbconnect } = require("./config")
+mongoose.connect(dbconnect);
 
 const Schema=mongoose.Schema;
 const ObjectId=Schema.ObjectId;

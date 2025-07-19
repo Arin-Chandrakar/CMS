@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express=require("express");
 const JWT=require("jsonwebtoken");
 const mongoose=require("mongoose");

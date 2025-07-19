@@ -1,12 +1,11 @@
 const {Router}=require("express");
 const z =require("zod")
-const {userModel}=require("../db")
-const JWT_USER_SECRET="Iamnotgay"
+const {userModel, purchaseModel, courseModel}=require("../db")
+const { JWT_USER_SECRET } = require("./config")
 const jwt=require("jsonwebtoken");
-const hashSecret="messigoat123"
 const userRouter=Router();
 const bcrypt=require("bcrypt");
-const { userAuth }=require("../middleware/userAuth")
+const { userAuthentication }=require("../middleware/userAuth")
 
 userRouter.post("/signup", async function(req,res){
     const input=z.object({
@@ -65,10 +64,28 @@ userRouter.post("/signin",async function(req,res){
         })
     }
 })
-userRouter.post("/purchases",userAuth,async function(req,res){
-    const purchasedCourses=
+userRouter.get("/purchases",userAuthentication,async function(req,res){
+    const userId=req.userId;
+
+    const purchases= await purchaseModel.find({
+        userId
+    });
+
+    let purchasedCourseIds=[];
+
+    for(let i=0; i<purchases.length;i++){
+        purchasedCourseIds.push(purchases[i].courseId)
+
+    }
+
+
+    const courseData= await courseModel.find({
+        _id: {$in: purchasedCourseIds}
+    })
+    
+
     res.json({
-        message:"purchase endpoint"
+        purchases,courseData
     })
 })
 
